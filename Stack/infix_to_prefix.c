@@ -1,21 +1,29 @@
 #include<stdio.h>
 #include<string.h>
-int stack[100];
+char stack[100];
 int top=-1;
 char result[100];
 int k=0;
+void display()
+{
+    printf("\nSTACK  :  ");
+    for(int i=0;i<=top;i++)
+    printf("%c\t",stack[i]);
+}
 char * reverse(char *str)
 {
-    int i,n=strlen(str),temp;
-    for(i=0;i<n/2;i++)
+    int temp;
+    char * p=str;
+    char *q=&p[strlen(p)-1];
+    while(*p!=*q)
     {
-        temp=str[i];
-        str[i]=str[n-1-i];
-        str[n-1-i]=temp;
+        temp=*p;
+        *p++=*q;
+        *q--=temp;
     }
     return str;
 }
-int isdigitalpha(char c)
+int isalphadigit(char c)
 {
     if(c>='a'&&c<='z')
     return 1;
@@ -25,46 +33,43 @@ int isdigitalpha(char c)
     return 1;
     return 0;
 }
-void push(int val)
+void push(char c)
 {
-    stack[++top]=val;
+    stack[++top]=c;
 }
 void pop()
 {
     if(top==-1)
     return;
     if(stack[top]==')')
-    {
-        top--;
-        return;
-    }
+    top--;
+    else
     result[k++]=stack[top--];
 }
 void main()
 {
-    char s[100];
-    scanf("%s",s);
-    char *str=reverse(s);
-    int i=0;
-    while(str[i]!='\0')
+    char str[100];
+    scanf("%s",str);
+    char * s = reverse(str);
+    while(*s!='\0')
     {
-        if(isdigitalpha(str[i]))
-            result[k++]=str[i];
-        else 
+        if(isalphadigit(*s))
+        result[k++]=*s;
+        else
         {
-            if(top!=-1 || stack[top]==')')
+            if(top!=-1 && stack[top]!=')')
             {
-                if(str[i]=='(')
+                if(*s=='(')
                 {
                     while(stack[top]!=')')
                     pop();
                     pop();
                 }
-                else if(str[i]==')')
-                push(str[i]);
-                else
+                else if(*s==')')
+                push(*s);
+                else 
                 {
-                    if(str[i]=='^')
+                    if(*s=='^'|| *s=='*' ||*s=='/'||*s=='%')
                     {
                         if(stack[top]=='^')
                         {
@@ -72,29 +77,27 @@ void main()
                             pop();
                         }
                     }
-                    else if(str[i]=='+' || str[i]=='-')
+                    else
                     {
-                        if(stack[top]!='+' || str[i]!='-')
+                        if(stack[top]!='+' && stack[top]!='-')
                         {
                             while(top!=-1 && stack[top]!='+' && stack[top]!='-' && stack[top]!=')')
                             pop();
                         }
                     }
-                    else
-                    {
-                        if(stack[top]=='^')
-                        {
-                            while(stack[top]=='^')
-                            pop();
-                        }
-
-                    }
-                    push(str[i]);
+                    push(*s);
                 }
             }
-            i++;
+            else
+            push(*s);
         }
+        display();
+        printf("\nRESULT :  %s\n",result); 
+        s++;
     }
+    while(top!=-1)
+    pop();
     result[k]='\0';
-    printf("%s",reverse(result));
+    char * prefix=reverse(result);
+    printf("%s",prefix);
 }

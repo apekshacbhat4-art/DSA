@@ -1,5 +1,5 @@
 #include<stdio.h>
-int stack[100];
+char stack[100];
 int top=-1;
 void push(int val)
 {
@@ -37,35 +37,33 @@ void main()
         printf("%c",str[i]);
         else
         {
-            if(str[i]=='(')
-            push(str[i]);
-            else if(str[i]==')')
+            if(top!=-1 && stack[top]!='(')
             {
-                while(stack[top]!='(')
-                pop();
-                pop();
-            }
-            else
-            {
-                if(top!=-1 && stack[top]!='(')
+                if(str[i]==')')
                 {
-                    if(str[i]=='+'||str[i]=='-')
-                    {
-                        while(top!=-1 && stack[top]!='(')
+                    while(stack[top]!='(')
+                    pop();
+                    pop();
+                }
+                else
+                {
+                if(str[i]=='+'||str[i]=='-')
+                {
+                    while(top!=-1 && stack[top]!='(')
                         pop();
-                    }
-                    else if(str[i]=='*' || str[i]=='/' || str[i]=='%')
-                    {
-                        if(stack[top]!='+' && stack[top]!='-')
-                        {
-                            while(top!=-1 && stack[top]!='+' && stack[top]!='-' && stack[top]!='(')
-                            pop();
-                        }
-                    }
+                }
+                else if(str[i]=='*' || str[i]=='/' || str[i]=='%')
+                {
+                    while(top!=-1 && stack[top]!='+' && stack[top]!='-' &&stack[top]!='(')
+                    pop();
                 }
                 push(str[i]);
+                }
             }
+            else
+            push(str[i]);
         }
+    
         i++;
     }
     while(top!=-1)

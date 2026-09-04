@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<math.h>
 int stack[100];
 int top=-1,k=0;
 char result[100];
@@ -46,7 +47,7 @@ int calculation(int op1,int op2,char op)
     if(op=='/')
     return op1/op2;
     if(op=='^')
-    return op1^op2;
+    return pow(op1,op2);
     if(op=='%')
     return op1%op2;
 }
@@ -59,35 +60,33 @@ char * infix_to_postfix(char *str)
             result[k++]=str[i];
             else
             {
-                if(str[i]=='(')
-                push(str[i]);
-                else if(str[i]==')')
+                if(top!=-1 && stack[top]!='(')
                 {
-                    while(stack[top]!='(')
-                    pop();
-                    pop();
-                }
-                else
-                {
-                    if(top!=-1 && stack[top]!='(')
+                    if(str[i]==')')
                     {
-                        if(str[i]=='+'||str[i]=='-')
-                        {
-                            while(top!=-1 && stack[top]!='(')
+                        while(stack[top]!='(')
+                        pop();
+                        pop();
+                    }
+                    else
+                    {
+                    if(str[i]=='+'||str[i]=='-')
+                    {
+                        while(top!=-1 && stack[top]!='(')
                             pop();
-                        }
-                        else if(str[i]=='*' || str[i]=='/' || str[i]=='%')
-                        {
-                            if(stack[top]!='+' && stack[top]!='-')
-                            {
-                                while(top!=-1 && stack[top]!='+' && stack[top]!='-' && stack[top]!='(')
-                                pop();
-                            }
-                        }
+                    }
+                    else if(str[i]=='*' || str[i]=='/' || str[i]=='%')
+                    {
+                        while(top!=-1 && stack[top]!='+' && stack[top]!='-' &&stack[top]!='(')
+                        pop();
                     }
                     push(str[i]);
+                    }
                 }
+                else
+                push(str[i]);
             }
+        
             i++;
         }
         while(top!=-1)
@@ -112,3 +111,4 @@ void main()
     }
     printf("Final result : %d",pop2());
 }
+ 
