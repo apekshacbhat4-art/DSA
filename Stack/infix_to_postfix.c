@@ -37,7 +37,7 @@ void main()
         printf("%c",str[i]);
         else
         {
-            if(top!=-1 && stack[top]!='(')
+            if(top!=-1 && stack[top]!='(' || str[i]==')')
             {
                 if(str[i]==')')
                 {

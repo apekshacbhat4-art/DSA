@@ -60,7 +60,7 @@ char * infix_to_postfix(char *str)
             result[k++]=str[i];
             else
             {
-                if(top!=-1 && stack[top]!='(')
+                if(top!=-1 && stack[top]!='(' || str[i]==')')
                 {
                     if(str[i]==')')
                     {
