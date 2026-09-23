@@ -39,7 +39,7 @@ void dequeue()
     printf("Deleted element:%d",front->data);
     if(front->next!=0)
     front=front->next;
-    else
+    else 
     front=0;
 }
 int peek()
@@ -51,7 +51,7 @@ void display()
     struct node * temp=front;
     while(temp!=0)
     {
-        printf("%d\t",*temp);
+        printf("%d\t",temp->data);
         temp=temp->next;
     }
 }
